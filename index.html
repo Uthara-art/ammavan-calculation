@@ -108,6 +108,57 @@
             </div>
         </main>
 
+        <!-- SCREEN 3: RESULT SCREEN -->
+        <main class="screen-view" id="resultScreen" aria-hidden="true">
+            <div class="hero-card result-card">
+                <!-- Navigation Top Bar -->
+                <div class="card-header">
+                    <button type="button" class="btn-back" id="btnResultBack" aria-label="Edit Input">
+                        <span class="back-arrow">←</span> Edit Story
+                    </button>
+                    <div class="step-badge score-step-badge">OFFICIAL VERDICT</div>
+                </div>
+
+                <!-- Result Main Title -->
+                <h2 class="result-header-subtitle">YOUR RELATIVE OWES YOU</h2>
+                
+                <!-- Big Amount Display -->
+                <div class="amount-display-box">
+                    <span class="currency-symbol">₹</span>
+                    <span class="total-amount" id="resTotalAmount">500</span>
+                </div>
+
+                <!-- Pressure Meter & Severity -->
+                <div class="pressure-score-box">
+                    <div class="score-labels">
+                        <span class="score-title">Family Pressure Score</span>
+                        <span class="score-value" id="resScoreText">0/100</span>
+                    </div>
+                    <div class="meter-bar-track">
+                        <div class="meter-bar-fill" id="resScoreFill" style="width: 5%;"></div>
+                    </div>
+                    <div class="severity-badge" id="resSeverity">
+                        Suspiciously Peaceful 😌
+                    </div>
+                </div>
+
+                <!-- Detected Categories Breakdown -->
+                <div class="breakdown-box">
+                    <h3 class="breakdown-title">Detected Categories</h3>
+                    <ul class="category-list" id="resCategoryList">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+
+                <!-- Actions -->
+                <div class="action-box result-actions">
+                    <button type="button" class="btn-calculate btn-recalculate" id="btnRecalculate">
+                        <span>🔄 ANALYZE ANOTHER STORY</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+
     </div>
 
     <!-- Footer Credit -->
@@ -115,7 +166,8 @@
         <p>© <span id="year"></span> Ammavan AI Algorithm Labs • Powered by Unsolicited Advice</p>
     </footer>
 
-    <!-- Custom JavaScript -->
+    <!-- JavaScript Files -->
+    <script src="scoring.js"></script>
     <script src="script.js"></script>
 </body>
 
