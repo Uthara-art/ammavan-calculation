@@ -313,6 +313,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${day} ${month} ${year} • ${hours}:${minutes} ${ampm}`;
     }
 
+    // Short Funny Category Labels for Receipt Bill
+    const CATEGORY_SHORT_LABELS = {
+        salary: "Salary ethra? 💸",
+        nri_cousin: "Dubai chettan comparison 🌴",
+        marriage: "Kalyanam eppo? 💍",
+        career: "Joli enthaayi? 💼",
+        comparison: "Avane kandille? 👀",
+        advice: "Free advice thudangi 🙏"
+    };
+
     // Populate Digital Receipt DOM
     function populateReceipt(result) {
         if (receiptDate) {
@@ -336,8 +346,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 result.detectedCategories.forEach(cat => {
                     const row = document.createElement('div');
                     row.className = 'receipt-item-row';
+                    const shortLabel = CATEGORY_SHORT_LABELS[cat.id] || cat.name;
                     row.innerHTML = `
-                        <span class="receipt-item-name">${escapeHtml(cat.name)}</span>
+                        <span class="receipt-item-name">${escapeHtml(shortLabel)}</span>
                         <span class="receipt-item-dots"></span>
                         <span class="receipt-item-amount">₹${cat.amount}</span>
                     `;

@@ -592,11 +592,11 @@ textarea:focus {
 
 .receipt-paper {
     width: 100%;
-    max-width: 520px;
+    max-width: 500px;
     background: var(--paper-bg);
     color: var(--paper-text);
     border-radius: 20px 20px 4px 4px;
-    padding: 32px 22px 40px 22px;
+    padding: 26px 20px 32px 20px;
     position: relative;
     box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.7);
     font-family: 'Courier New', Courier, monospace, var(--font-poppins);
@@ -618,17 +618,17 @@ textarea:focus {
 }
 
 .receipt-header {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .receipt-logo {
-    font-size: 2.2rem;
+    font-size: 2rem;
     margin-bottom: 2px;
 }
 
 .receipt-mal-title {
     font-family: var(--font-malayalam);
-    font-size: clamp(1.35rem, 4vw, 1.7rem);
+    font-size: clamp(1.3rem, 4vw, 1.6rem);
     font-weight: 900;
     color: var(--paper-dark);
     margin-bottom: 2px;
@@ -637,32 +637,32 @@ textarea:focus {
 
 .receipt-brand-tag {
     font-family: var(--font-poppins);
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 800;
     letter-spacing: 2px;
     color: var(--paper-dark);
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     text-transform: uppercase;
 }
 
 .receipt-subtitle {
     font-family: var(--font-poppins);
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 500;
     font-style: italic;
     color: var(--paper-muted);
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
 .receipt-date-stamp {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 600;
     color: var(--paper-muted);
 }
 
 .receipt-divider {
     border-bottom: 2px dashed var(--paper-divider);
-    margin: 12px 0;
+    margin: 10px 0;
     width: 100%;
 }
 
@@ -673,51 +673,55 @@ textarea:focus {
 
 .receipt-section-title {
     font-family: var(--font-poppins);
-    font-size: 0.76rem;
+    font-size: 0.74rem;
     font-weight: 800;
     letter-spacing: 1.5px;
     text-transform: uppercase;
     color: var(--paper-muted);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .receipt-violations-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 5px;
     width: 100%;
 }
 
 .receipt-item-row {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
-    gap: 8px;
+    align-items: center;
+    gap: 6px;
     width: 100%;
+    line-height: 1.2;
 }
 
 .receipt-item-name {
     font-family: var(--font-poppins);
-    font-size: 0.84rem;
-    font-weight: 700;
+    font-size: 0.8rem;
+    font-weight: 600;
     color: var(--paper-dark);
-    flex: 1 1 auto;
-    word-break: break-word;
-    overflow-wrap: break-word;
+    flex: 0 1 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 68%;
     text-align: left;
 }
 
 .receipt-item-dots {
     flex: 1 1 auto;
-    min-width: 10px;
+    min-width: 8px;
     border-bottom: 1px dotted var(--paper-divider);
     height: 1px;
+    margin-bottom: 2px;
 }
 
 .receipt-item-amount {
     flex: 0 0 auto;
     font-family: 'Courier New', Courier, monospace, sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.86rem;
     font-weight: 800;
     color: var(--paper-dark);
     white-space: nowrap;
@@ -727,7 +731,7 @@ textarea:focus {
 .score-section {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
 }
 
 .receipt-label-row {
@@ -738,14 +742,14 @@ textarea:focus {
 
 .receipt-meter-label {
     font-family: var(--font-poppins);
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     font-weight: 700;
     color: var(--paper-dark);
 }
 
 .receipt-score-val {
     font-family: 'Courier New', Courier, monospace, sans-serif;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 900;
     color: var(--paper-dark);
 }
@@ -756,7 +760,7 @@ textarea:focus {
     background: rgba(0, 0, 0, 0.08);
     border-radius: 10px;
     overflow: hidden;
-    margin: 4px 0 6px 0;
+    margin: 3px 0 5px 0;
     border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
@@ -769,12 +773,12 @@ textarea:focus {
 
 .receipt-severity-tag {
     font-family: var(--font-poppins);
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 800;
     color: #b91c1c;
     background: #fee2e2;
     border: 1px solid #fca5a5;
-    padding: 6px 10px;
+    padding: 5px 8px;
     border-radius: 8px;
     text-align: center;
     margin-top: 2px;
@@ -788,16 +792,16 @@ textarea:focus {
 
 .total-due-label {
     font-family: var(--font-poppins);
-    font-size: 0.76rem;
+    font-size: 0.74rem;
     font-weight: 800;
     letter-spacing: 2px;
     color: var(--paper-muted);
-    margin-bottom: 4px;
+    margin-bottom: 3px;
 }
 
 .total-due-amount {
     font-family: 'Courier New', Courier, monospace, sans-serif;
-    font-size: clamp(2rem, 6.5vw, 3rem);
+    font-size: clamp(2rem, 6vw, 2.7rem);
     font-weight: 900;
     color: var(--paper-dark);
     line-height: 1;
@@ -806,10 +810,29 @@ textarea:focus {
     word-break: break-word;
 }
 
-/* AI Family Analysis Section */
-.ai-analysis-section {
-    text-align: left;
+/* AI Family Analysis Card (Outside Receipt) */
+.ai-analysis-card {
     width: 100%;
+    max-width: 500px;
+    margin-top: 16px;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 16px 18px;
+    text-align: left;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.ai-analysis-card-title {
+    font-family: var(--font-poppins);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent-cyan);
+    margin-bottom: 10px;
 }
 
 .ai-analysis-list {
@@ -824,9 +847,9 @@ textarea:focus {
     font-family: var(--font-poppins);
     font-size: 0.82rem;
     font-weight: 500;
-    color: var(--paper-dark);
+    color: var(--text-light);
     line-height: 1.45;
-    background: rgba(241, 245, 249, 0.6);
+    background: rgba(255, 255, 255, 0.06);
     border-left: 3px solid var(--accent-cyan);
     padding: 8px 10px;
     border-radius: 6px;
@@ -837,8 +860,8 @@ textarea:focus {
     font-family: var(--font-poppins);
     font-size: 0.86rem;
     font-weight: 800;
-    color: var(--paper-dark);
-    background: rgba(255, 183, 3, 0.15);
+    color: #ffb703;
+    background: rgba(255, 183, 3, 0.12);
     border: 1px dashed var(--primary-orange);
     padding: 10px 12px;
     border-radius: 8px;
