@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>അമ്മാവൻ Calculation | Ammavan Calculation</title>
     <meta name="description"
         content="Ammavan Calculation - Because your relatives' expectations deserve a scientific answer.">
@@ -26,7 +26,7 @@
     <div class="bg-grid"></div>
 
     <!-- Floating funny relative quote stickers -->
-    <div class="floating-quotes">
+    <div class="floating-quotes" aria-hidden="true">
         <div class="quote-badge badge-1">"കല്യാണം എപ്പോഴാ? 💍"</div>
         <div class="quote-badge badge-2">"മാസം എത്ര കിട്ടും? 💰"</div>
         <div class="quote-badge badge-3">"PSC എഴുതുന്നില്ലേ? 📚"</div>
@@ -108,52 +108,104 @@
             </div>
         </main>
 
-        <!-- SCREEN 3: RESULT SCREEN -->
-        <main class="screen-view" id="resultScreen" aria-hidden="true">
-            <div class="hero-card result-card">
-                <!-- Navigation Top Bar -->
-                <div class="card-header">
-                    <button type="button" class="btn-back" id="btnResultBack" aria-label="Edit Input">
-                        <span class="back-arrow">←</span> Edit Story
-                    </button>
-                    <div class="step-badge score-step-badge">OFFICIAL VERDICT</div>
+        <!-- SCREEN 2.5: LOADING SCREEN -->
+        <main class="screen-view" id="loadingScreen" aria-hidden="true">
+            <div class="hero-card loading-card">
+                <div class="radar-container">
+                    <div class="radar-sweep"></div>
+                    <div class="radar-avatar">👴🏾</div>
                 </div>
-
-                <!-- Result Main Title -->
-                <h2 class="result-header-subtitle">YOUR RELATIVE OWES YOU</h2>
                 
-                <!-- Big Amount Display -->
-                <div class="amount-display-box">
-                    <span class="currency-symbol">₹</span>
-                    <span class="total-amount" id="resTotalAmount">500</span>
+                <h2 class="loading-title">Analyzing Ammavan Pressure...</h2>
+                <p class="loading-subtitle">അമ്മാവൻ ചോദ്യങ്ങൾ പരിശോധിക്കുന്നു...</p>
+
+                <!-- Cycling Funny Quote Message -->
+                <div class="loading-msg-box">
+                    <p class="loading-msg-text" id="loadingMsg">Consulting Gulf Ammavans... ✈️</p>
                 </div>
 
-                <!-- Pressure Meter & Severity -->
-                <div class="pressure-score-box">
-                    <div class="score-labels">
-                        <span class="score-title">Family Pressure Score</span>
-                        <span class="score-value" id="resScoreText">0/100</span>
+                <!-- Progress Bar -->
+                <div class="loading-bar-track">
+                    <div class="loading-bar-fill"></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- SCREEN 3: AMMAVAN BILL RECEIPT SCREEN -->
+        <main class="screen-view" id="resultScreen" aria-hidden="true">
+            <div class="receipt-wrapper">
+                
+                <!-- Digital Paper Receipt Slip -->
+                <div class="receipt-paper" id="ammavanReceipt">
+                    <!-- Receipt Header -->
+                    <div class="receipt-header">
+                        <div class="receipt-logo">👴🏾</div>
+                        <h1 class="receipt-mal-title">അമ്മാവൻ Calculation</h1>
+                        <div class="receipt-brand-tag">AMMAVAN CALCULATION™</div>
+                        <div class="receipt-subtitle">"Family Pressure Compensation Bill"</div>
+                        <div class="receipt-date-stamp" id="receiptDate">11 Sep 2026 • 10:30 PM</div>
                     </div>
-                    <div class="meter-bar-track">
-                        <div class="meter-bar-fill" id="resScoreFill" style="width: 5%;"></div>
+
+                    <div class="receipt-divider"></div>
+
+                    <!-- Detected Violations Section -->
+                    <div class="receipt-section">
+                        <div class="receipt-section-title">Detected Violations</div>
+                        <div class="receipt-violations-list" id="receiptViolationsList">
+                            <!-- Populated dynamically by JS -->
+                        </div>
                     </div>
-                    <div class="severity-badge" id="resSeverity">
-                        Suspiciously Peaceful 😌
+
+                    <div class="receipt-divider"></div>
+
+                    <!-- Family Pressure Score Section -->
+                    <div class="receipt-section score-section">
+                        <div class="receipt-label-row">
+                            <span class="receipt-score-label">Family Pressure Score</span>
+                            <span class="receipt-score-val" id="receiptScoreVal">90 / 100</span>
+                        </div>
+                        <div class="receipt-severity-tag" id="receiptSeverityTag">
+                            MAXIMUM AMMAVAN DAMAGE 🚨
+                        </div>
                     </div>
+
+                    <div class="receipt-divider"></div>
+
+                    <!-- Total Kaineettam Due Section -->
+                    <div class="receipt-section total-section">
+                        <div class="total-due-label">TOTAL KAINEETTAM DUE</div>
+                        <div class="total-due-amount" id="receiptTotalAmount">₹5,000</div>
+                    </div>
+
+                    <div class="receipt-divider"></div>
+
+                    <!-- Funny Roast Line Box -->
+                    <div class="receipt-roast-box">
+                        <span class="roast-quote-mark">“</span>
+                        <p class="roast-text" id="receiptRoastText">"Your salary was discussed more than your happiness."</p>
+                        <span class="roast-quote-mark">”</span>
+                    </div>
+
+                    <!-- Receipt Footer & Stamp -->
+                    <div class="receipt-footer">
+                        <p class="footer-cert">Certified by absolutely nobody.</p>
+                        <p class="footer-cert">Valid only for family WhatsApp groups.</p>
+
+                        <!-- Decorative Barcode -->
+                        <div class="receipt-barcode" aria-hidden="true">
+                            <div class="barcode-lines"></div>
+                            <div class="barcode-num">AMMAVAN-8080-2026-PAY-NOW</div>
+                        </div>
+                    </div>
+
+                    <!-- Jagged/Zig-Zag Bottom Edge Pattern -->
+                    <div class="receipt-zigzag-bottom"></div>
                 </div>
 
-                <!-- Detected Categories Breakdown -->
-                <div class="breakdown-box">
-                    <h3 class="breakdown-title">Detected Categories</h3>
-                    <ul class="category-list" id="resCategoryList">
-                        <!-- Populated by JS -->
-                    </ul>
-                </div>
-
-                <!-- Actions -->
-                <div class="action-box result-actions">
-                    <button type="button" class="btn-calculate btn-recalculate" id="btnRecalculate">
-                        <span>🔄 ANALYZE ANOTHER STORY</span>
+                <!-- Receipt Bottom Action -->
+                <div class="receipt-actions">
+                    <button type="button" class="btn-calculate btn-calculate-again" id="btnCalculateAgain">
+                        <span>🔄 CALCULATE AGAIN</span>
                     </button>
                 </div>
             </div>

@@ -1,4 +1,6 @@
-/* CSS Reset and Variables */
+/* =================================================== */
+/* GLOBAL DESIGN SYSTEM & TOKENS                       */
+/* =================================================== */
 :root {
     --bg-dark: #0b0f19;
     --card-bg: rgba(22, 28, 45, 0.78);
@@ -15,13 +17,20 @@
     --text-muted: #94a3b8;
     --text-dim: #64748b;
 
+    /* Receipt Specific Color Tokens */
+    --paper-bg: #faf8f5;
+    --paper-text: #1e293b;
+    --paper-muted: #64748b;
+    --paper-divider: #cbd5e1;
+    --paper-dark: #0f172a;
+
     --font-malayalam: 'Noto Sans Malayalam', sans-serif;
     --font-poppins: 'Poppins', sans-serif;
 
     --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-* {
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -30,8 +39,8 @@
 
 html, body {
     width: 100%;
-    height: 100%;
-    overflow: hidden;
+    min-height: 100%;
+    overflow-x: hidden;
     background-color: var(--bg-dark);
     color: var(--text-main);
     font-family: var(--font-poppins);
@@ -45,7 +54,7 @@ html, body {
 
 /* Background Animated Gradients */
 .bg-glow {
-    position: absolute;
+    position: fixed;
     border-radius: 50%;
     filter: blur(120px);
     opacity: 0.45;
@@ -72,7 +81,7 @@ html, body {
 }
 
 .bg-grid {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -85,7 +94,7 @@ html, body {
 
 /* Floating Malayalam Ammavan Quotes Badges */
 .floating-quotes {
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100%;
     pointer-events: none;
@@ -106,32 +115,34 @@ html, body {
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
     animation: floatBadge 8s infinite alternate ease-in-out;
     opacity: 0.8;
+    white-space: nowrap;
 }
 
-.badge-1 { top: 10%; left: 8%; animation-delay: 0s; }
-.badge-2 { top: 20%; right: 7%; animation-delay: -2s; }
-.badge-3 { bottom: 22%; left: 6%; animation-delay: -4s; }
-.badge-4 { bottom: 16%; right: 9%; animation-delay: -6s; }
-.badge-5 { top: 82%; left: 42%; transform: translateX(-50%); animation-delay: -1s; }
+.badge-1 { top: 8%; left: 6%; animation-delay: 0s; }
+.badge-2 { top: 16%; right: 6%; animation-delay: -2s; }
+.badge-3 { bottom: 20%; left: 5%; animation-delay: -4s; }
+.badge-4 { bottom: 14%; right: 7%; animation-delay: -6s; }
+.badge-5 { top: 82%; left: 50%; transform: translateX(-50%); animation-delay: -1s; }
 
 /* Viewport Container for Multi-Screen Views */
 .app-viewport {
     position: relative;
     z-index: 2;
     width: 100%;
-    max-width: 620px;
-    height: 100%;
+    max-width: 600px;
+    min-height: calc(100vh - 60px);
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 20px 16px;
+    margin: auto;
 }
 
-/* Screen Views */
+/* Screen Views Transition Setup */
 .screen-view {
     position: absolute;
-    width: calc(100% - 40px);
-    max-width: 580px;
+    width: calc(100% - 32px);
+    max-width: 520px;
     opacity: 0;
     visibility: hidden;
     transform: translateY(30px) scale(0.96);
@@ -139,6 +150,9 @@ html, body {
                 opacity 0.4s ease, 
                 visibility 0.4s ease;
     pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .screen-view.active-screen {
@@ -193,7 +207,10 @@ html, body {
     border-color: rgba(255, 255, 255, 0.22);
 }
 
-/* Landing Page Elements */
+/* =================================================== */
+/* SCREEN 1: LANDING PAGE STYLES                       */
+/* =================================================== */
+
 .badge-icon {
     display: inline-flex;
     align-items: center;
@@ -220,12 +237,13 @@ html, body {
 
 .main-title {
     font-family: var(--font-malayalam);
-    font-size: clamp(2.2rem, 6vw, 3.2rem);
+    font-size: clamp(2rem, 5.5vw, 3rem);
     font-weight: 900;
     line-height: 1.25;
     color: var(--text-main);
     margin-bottom: 6px;
     letter-spacing: -0.5px;
+    word-break: break-word;
 }
 
 .main-title .accent-text {
@@ -238,7 +256,7 @@ html, body {
 
 .sub-title {
     font-family: var(--font-poppins);
-    font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+    font-size: clamp(1rem, 3.2vw, 1.3rem);
     font-weight: 600;
     color: var(--text-muted);
     letter-spacing: 0.5px;
@@ -255,13 +273,13 @@ html, body {
 
 .tagline {
     font-family: var(--font-poppins);
-    font-size: clamp(0.95rem, 2.8vw, 1.08rem);
+    font-size: clamp(0.9rem, 2.6vw, 1.05rem);
     font-weight: 400;
     color: #cbd5e1;
     line-height: 1.6;
     font-style: italic;
     margin-bottom: 26px;
-    padding: 0 8px;
+    padding: 0 4px;
 }
 
 .status-pill {
@@ -328,7 +346,7 @@ html, body {
 
 .input-card {
     text-align: left;
-    padding: 34px 30px;
+    padding: 34px 28px;
 }
 
 .card-header {
@@ -372,32 +390,27 @@ html, body {
     border-radius: 12px;
 }
 
-.score-step-badge {
-    color: var(--primary-gold);
-    background: rgba(255, 183, 3, 0.1);
-    border-color: rgba(255, 183, 3, 0.25);
-}
-
 .input-title {
     font-family: var(--font-malayalam);
-    font-size: clamp(1.4rem, 4.2vw, 1.85rem);
+    font-size: clamp(1.3rem, 3.8vw, 1.75rem);
     font-weight: 800;
     color: var(--text-main);
     line-height: 1.35;
     margin-bottom: 6px;
+    word-break: break-word;
 }
 
 .input-subtitle {
     font-family: var(--font-poppins);
-    font-size: clamp(0.92rem, 2.8vw, 1.08rem);
+    font-size: clamp(0.88rem, 2.6vw, 1.02rem);
     font-weight: 500;
     color: var(--primary-gold);
-    margin-bottom: 24px;
+    margin-bottom: 22px;
 }
 
-/* Form & Textarea */
 .form-group {
-    margin-bottom: 24px;
+    margin-bottom: 22px;
+    width: 100%;
 }
 
 .textarea-wrapper {
@@ -408,15 +421,16 @@ html, body {
 
 textarea {
     width: 100%;
-    background: rgba(11, 15, 25, 0.7);
+    min-height: 130px;
+    background: rgba(11, 15, 25, 0.75);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 20px;
-    padding: 16px 18px;
+    padding: 16px;
     font-family: var(--font-poppins);
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     line-height: 1.6;
     color: var(--text-main);
-    resize: none;
+    resize: vertical;
     outline: none;
     transition: var(--transition-smooth);
     user-select: text;
@@ -424,41 +438,42 @@ textarea {
 
 textarea::placeholder {
     color: #64748b;
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     font-style: italic;
 }
 
 textarea:focus {
     border-color: var(--primary-gold);
     box-shadow: 0 0 20px rgba(255, 183, 3, 0.25);
-    background: rgba(11, 15, 25, 0.9);
+    background: rgba(11, 15, 25, 0.95);
 }
 
 .form-description {
     font-family: var(--font-poppins);
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     font-weight: 400;
     color: var(--text-muted);
     line-height: 1.5;
 }
 
-/* Action Button */
 .action-box {
     display: flex;
     justify-content: center;
+    width: 100%;
 }
 
 .btn-calculate {
     width: 100%;
+    min-height: 52px;
     background: linear-gradient(135deg, var(--primary-gold), var(--primary-orange));
     border: none;
     border-radius: 50px;
-    padding: 16px 28px;
+    padding: 14px 24px;
     color: #0b0f19;
     font-family: var(--font-poppins);
-    font-size: 1rem;
+    font-size: 0.98rem;
     font-weight: 700;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
     cursor: pointer;
     box-shadow: 0 10px 25px -5px rgba(251, 133, 0, 0.4),
                 0 0 20px rgba(255, 183, 3, 0.2);
@@ -466,6 +481,7 @@ textarea:focus {
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
 }
 
 .btn-calculate:hover {
@@ -480,175 +496,434 @@ textarea:focus {
 }
 
 /* =================================================== */
-/* SCREEN 3: RESULT CARD SPECIFIC STYLES               */
+/* SCREEN 2.5: LOADING SCREEN STYLES                   */
 /* =================================================== */
 
-.result-card {
-    text-align: center;
-    padding: 34px 28px;
-}
-
-.result-header-subtitle {
-    font-family: var(--font-poppins);
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-}
-
-.amount-display-box {
-    display: inline-flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 4px;
-    margin-bottom: 20px;
-    background: linear-gradient(135deg, #ffffff, var(--primary-gold));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 4px 20px rgba(255, 183, 3, 0.4));
-}
-
-.currency-symbol {
-    font-size: clamp(2.2rem, 6vw, 3.2rem);
-    font-weight: 800;
-}
-
-.total-amount {
-    font-size: clamp(3.2rem, 10vw, 4.5rem);
-    font-weight: 900;
-    line-height: 1;
-    letter-spacing: -1px;
-}
-
-/* Pressure Score Meter */
-.pressure-score-box {
-    background: rgba(11, 15, 25, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    padding: 16px 20px;
-    margin-bottom: 22px;
-    text-align: left;
-}
-
-.score-labels {
+.loading-card {
+    padding: 44px 28px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 8px;
+    justify-content: center;
 }
 
-.score-title {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--text-muted);
+.radar-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(11, 15, 25, 0.8);
+    border: 2px solid rgba(0, 245, 212, 0.3);
+    box-shadow: 0 0 30px rgba(0, 245, 212, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+    overflow: hidden;
 }
 
-.score-value {
-    font-size: 0.95rem;
-    font-weight: 800;
-    color: var(--accent-cyan);
-}
-
-.meter-bar-track {
+.radar-sweep {
+    position: absolute;
     width: 100%;
-    height: 10px;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent 0deg, transparent 270deg, rgba(0, 245, 212, 0.5) 360deg);
+    animation: rotateSweep 1.6s linear infinite;
+}
+
+.radar-avatar {
+    font-size: 2.5rem;
+    position: relative;
+    z-index: 2;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.loading-title {
+    font-family: var(--font-poppins);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 4px;
+}
+
+.loading-subtitle {
+    font-family: var(--font-malayalam);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--primary-gold);
+    margin-bottom: 20px;
+}
+
+.loading-msg-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 12px 20px;
+    margin-bottom: 24px;
+    width: 100%;
+    min-height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-msg-text {
+    font-family: var(--font-poppins);
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--accent-cyan);
+    font-style: italic;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.loading-bar-track {
+    width: 100%;
+    height: 6px;
     background: rgba(255, 255, 255, 0.08);
     border-radius: 10px;
     overflow: hidden;
+}
+
+.loading-bar-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--primary-gold));
+    border-radius: 10px;
+    animation: fillProgress 1.8s ease-in-out forwards;
+}
+
+@keyframes rotateSweep {
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes fillProgress {
+    0% { width: 5%; }
+    50% { width: 65%; }
+    100% { width: 100%; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =================================================== */
+/* SCREEN 3: AMMAVAN BILL DIGITAL RECEIPT STYLES       */
+/* =================================================== */
+
+.receipt-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0 20px 0;
+}
+
+.receipt-paper {
+    width: 100%;
+    max-width: 480px;
+    background: var(--paper-bg);
+    color: var(--paper-text);
+    border-radius: 20px 20px 4px 4px;
+    padding: 34px 24px 44px 24px;
+    position: relative;
+    box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.7),
+                0 0 40px rgba(255, 183, 3, 0.12);
+    font-family: 'Courier New', Courier, monospace, var(--font-poppins);
+    text-align: center;
+    overflow: hidden;
+    animation: receiptUnroll 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.receipt-zigzag-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 16px;
+    background-image: linear-gradient(135deg, var(--bg-dark) 8px, transparent 0),
+                      linear-gradient(-135deg, var(--bg-dark) 8px, transparent 0);
+    background-position: left bottom;
+    background-repeat: repeat-x;
+    background-size: 16px 16px;
+}
+
+.receipt-header {
+    margin-bottom: 14px;
+}
+
+.receipt-logo {
+    font-size: 2.4rem;
+    margin-bottom: 2px;
+}
+
+.receipt-mal-title {
+    font-family: var(--font-malayalam);
+    font-size: clamp(1.4rem, 4.5vw, 1.8rem);
+    font-weight: 900;
+    color: var(--paper-dark);
+    margin-bottom: 2px;
+    letter-spacing: -0.5px;
+}
+
+.receipt-brand-tag {
+    font-family: var(--font-poppins);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--paper-dark);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.receipt-subtitle {
+    font-family: var(--font-poppins);
+    font-size: 0.82rem;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--paper-muted);
+    margin-bottom: 8px;
+}
+
+.receipt-date-stamp {
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--paper-muted);
+    letter-spacing: 0.5px;
+}
+
+.receipt-divider {
+    border-bottom: 2px dashed var(--paper-divider);
+    margin: 14px 0;
+    width: 100%;
+}
+
+.receipt-section {
+    text-align: left;
+    width: 100%;
+}
+
+.receipt-section-title {
+    font-family: var(--font-poppins);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--paper-muted);
     margin-bottom: 12px;
 }
 
-.meter-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent-cyan), var(--primary-gold), var(--accent-rose));
-    border-radius: 10px;
-    transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.severity-badge {
-    display: inline-block;
+.receipt-violations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     width: 100%;
-    text-align: center;
+}
+
+.receipt-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    width: 100%;
+}
+
+.receipt-item-name {
     font-family: var(--font-poppins);
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     font-weight: 700;
-    padding: 8px 12px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--primary-gold);
+    color: var(--paper-dark);
+    flex: 1 1 auto;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
-/* Category Breakdown List */
-.breakdown-box {
-    text-align: left;
-    margin-bottom: 24px;
+.receipt-item-dots {
+    flex: 1 1 auto;
+    min-width: 12px;
+    border-bottom: 1px dotted var(--paper-divider);
+    height: 1px;
 }
 
-.breakdown-title {
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin-bottom: 10px;
+.receipt-item-amount {
+    flex: 0 0 auto;
+    font-family: 'Courier New', Courier, monospace, sans-serif;
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: var(--paper-dark);
+    white-space: nowrap;
 }
 
-.category-list {
-    list-style: none;
+.score-section {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-.category-item {
+.receipt-label-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
-    padding: 10px 16px;
-    font-size: 0.85rem;
 }
 
-.category-item .cat-name {
-    font-weight: 600;
-    color: var(--text-main);
-}
-
-.category-item .cat-amount {
+.receipt-score-label {
+    font-family: var(--font-poppins);
+    font-size: 0.82rem;
     font-weight: 700;
-    color: var(--primary-gold);
+    color: var(--paper-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.category-item.base-item {
-    border-style: dashed;
-    opacity: 0.85;
+.receipt-score-val {
+    font-family: 'Courier New', Courier, monospace, sans-serif;
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: var(--paper-dark);
 }
 
-.category-item.base-item .cat-name {
-    color: var(--text-muted);
+.receipt-severity-tag {
+    font-family: var(--font-poppins);
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: #b91c1c;
+    background: #fee2e2;
+    border: 1px solid #fca5a5;
+    padding: 6px 12px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 2px;
+    word-break: break-word;
 }
 
-/* Result Actions */
-.result-actions {
-    margin-top: 8px;
+.total-section {
+    text-align: center;
+    padding: 4px 0;
 }
 
-.btn-recalculate {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.15));
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: var(--text-main);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+.total-due-label {
+    font-family: var(--font-poppins);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--paper-muted);
+    margin-bottom: 4px;
 }
 
-.btn-recalculate:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.28));
-    border-color: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+.total-due-amount {
+    font-family: 'Courier New', Courier, monospace, sans-serif;
+    font-size: clamp(2.2rem, 7.5vw, 3.2rem);
+    font-weight: 900;
+    color: var(--paper-dark);
+    line-height: 1;
+    letter-spacing: -1px;
+    white-space: nowrap;
+    word-break: break-word;
+}
+
+.receipt-roast-box {
+    background: rgba(241, 245, 249, 0.9);
+    border-left: 4px solid var(--primary-orange);
+    padding: 12px 14px;
+    border-radius: 8px;
+    margin: 2px 0;
+    text-align: left;
+    word-break: break-word;
+}
+
+.roast-quote-mark {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--primary-orange);
+    line-height: 0;
+}
+
+.roast-text {
+    font-family: var(--font-poppins);
+    font-size: 0.86rem;
+    font-weight: 600;
+    font-style: italic;
+    color: var(--paper-dark);
+    line-height: 1.45;
+    display: inline;
+}
+
+.receipt-footer {
+    margin-top: 16px;
+    font-family: var(--font-poppins);
+    font-size: 0.7rem;
+    color: var(--paper-muted);
+    font-weight: 500;
+    line-height: 1.5;
+    width: 100%;
+}
+
+.footer-cert {
+    font-style: italic;
+}
+
+.receipt-barcode {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.barcode-lines {
+    width: 100%;
+    max-width: 220px;
+    height: 34px;
+    background: repeating-linear-gradient(
+        90deg,
+        #0f172a,
+        #0f172a 3px,
+        transparent 3px,
+        transparent 6px,
+        #0f172a 6px,
+        #0f172a 8px,
+        transparent 8px,
+        transparent 11px,
+        #0f172a 11px,
+        #0f172a 15px
+    );
+    opacity: 0.9;
+}
+
+.barcode-num {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--paper-muted);
+    margin-top: 4px;
+}
+
+.receipt-actions {
+    width: 100%;
+    max-width: 480px;
+    margin-top: 20px;
+}
+
+.btn-calculate-again {
+    background: linear-gradient(135deg, var(--primary-gold), var(--primary-orange));
+    box-shadow: 0 10px 25px -5px rgba(251, 133, 0, 0.5);
+}
+
+.btn-calculate-again:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 15px 30px -5px rgba(251, 133, 0, 0.65);
+}
+
+@keyframes receiptUnroll {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 /* Footer */
@@ -659,6 +934,7 @@ textarea:focus {
     text-align: center;
     font-size: 0.75rem;
     color: var(--text-dim);
+    width: 100%;
 }
 
 /* Dynamic Click Ripple Effect */
@@ -675,7 +951,7 @@ textarea:focus {
 /* Toast Message */
 .tap-toast {
     position: fixed;
-    bottom: 70px;
+    bottom: 60px;
     left: 50%;
     transform: translateX(-50%) translateY(20px);
     background: rgba(15, 23, 42, 0.94);
@@ -684,7 +960,7 @@ textarea:focus {
     font-family: var(--font-malayalam);
     padding: 12px 24px;
     border-radius: 30px;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 600;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
     opacity: 0;
@@ -692,7 +968,7 @@ textarea:focus {
     transition: all 0.3s ease-out;
     pointer-events: none;
     text-align: center;
-    max-width: 90vw;
+    max-width: 88vw;
 }
 
 .tap-toast.show {
@@ -734,42 +1010,102 @@ textarea:focus {
     }
 }
 
-/* Responsive Media Queries */
-@media (max-width: 640px) {
-    .app-viewport {
-        padding: 12px;
-    }
+/* =================================================== */
+/* EXPLICIT RESPONSIVE BREAKPOINTS OPTIMIZATION        */
+/* =================================================== */
 
+/* 1. Ultra-Small Mobile Devices (320px - 340px) */
+@media (max-width: 340px) {
+    .app-viewport {
+        padding: 10px 8px;
+    }
+    .screen-view {
+        width: calc(100% - 16px);
+    }
+    .hero-card, .input-card, .loading-card {
+        padding: 22px 14px;
+        border-radius: 20px;
+    }
+    .receipt-paper {
+        padding: 24px 14px 34px 14px;
+    }
+    .main-title {
+        font-size: 1.7rem;
+    }
+    .sub-title {
+        font-size: 0.95rem;
+    }
+    .badge-1, .badge-2, .badge-3, .badge-4, .badge-5 {
+        display: none; /* Hide background badges on extra small screens for clarity */
+    }
+    .btn-calculate {
+        font-size: 0.85rem;
+        padding: 12px 16px;
+    }
+    .receipt-item-name {
+        font-size: 0.78rem;
+    }
+    .receipt-item-amount {
+        font-size: 0.85rem;
+    }
+}
+
+/* 2. Standard Mobile Devices (360px - 389px) */
+@media (min-width: 341px) and (max-width: 389px) {
+    .app-viewport {
+        padding: 14px 12px;
+    }
     .screen-view {
         width: calc(100% - 24px);
     }
-
-    .hero-card, .input-card, .result-card {
-        padding: 26px 18px;
-        border-radius: 24px;
+    .hero-card, .input-card {
+        padding: 28px 18px;
     }
-
-    .badge-1, .badge-2, .badge-3, .badge-4, .badge-5 {
-        font-size: 0.78rem;
-        padding: 6px 12px;
+    .receipt-paper {
+        padding: 26px 16px 36px 16px;
     }
+    .badge-1 { top: 4%; left: 2%; }
+    .badge-2 { top: 10%; right: 2%; }
+    .badge-3, .badge-4, .badge-5 { display: none; }
+}
 
-    .badge-1 { top: 5%; left: 4%; }
-    .badge-2 { top: 12%; right: 4%; }
-    .badge-3 { bottom: 10%; left: 4%; }
-    .badge-4 { bottom: 4%; right: 4%; }
-    .badge-5 { display: none; }
-
-    .tagline {
-        margin-bottom: 20px;
+/* 3. Modern Large Mobile (390px - 430px) */
+@media (min-width: 390px) and (max-width: 430px) {
+    .app-viewport {
+        padding: 16px;
     }
-
-    .btn-calculate {
-        font-size: 0.92rem;
-        padding: 14px 20px;
+    .hero-card, .input-card {
+        padding: 32px 22px;
     }
+    .badge-3, .badge-5 { display: none; }
+}
 
-    .amount-display-box {
-        margin-bottom: 14px;
+/* 4. Tablets & Phablets (640px - 899px, e.g., 768px) */
+@media (min-width: 640px) and (max-width: 899px) {
+    .app-viewport {
+        padding: 30px;
+    }
+    .screen-view {
+        max-width: 500px;
+    }
+}
+
+/* 5. Small Laptops & Desktops (900px - 1199px, e.g., 1024px) */
+@media (min-width: 900px) and (max-width: 1199px) {
+    .app-viewport {
+        padding: 40px;
+    }
+    .screen-view {
+        max-width: 520px;
+    }
+}
+
+/* 6. Large Monitored Desktop (1200px and up, e.g., 1440px) */
+@media (min-width: 1200px) {
+    .app-viewport {
+        padding: 48px;
+    }
+    .screen-view {
+        max-width: 520px;
     }
 }

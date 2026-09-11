@@ -5,32 +5,58 @@ document.addEventListener('DOMContentLoaded', () => {
         yearSpan.textContent = new Date().getFullYear();
     }
 
+    // Funny Roast Lines Array
+    const ROAST_LINES = [
+        "Your salary was discussed more than your happiness.",
+        "Dubai cousin detected. Financial damage confirmed.",
+        "Emotional damage successfully converted into money.",
+        "According to highly questionable science, they owe you money.",
+        "Ammavan status: 100% nosey, 0% helpful.",
+        "PSC coaching recommendations pending...",
+        "Unsolicited life advice processed and billed."
+    ];
+
+    // Funny Loading Quotes Array
+    const LOADING_QUOTES = [
+        "Consulting Gulf Ammavans... ✈️",
+        "Evaluating cousin's Dubai salary... 💰",
+        "Checking PSC exam cutoffs... 📚",
+        "Analyzing unsolicited life advice... 🗣️",
+        "Converting emotional damage into Rupees... 💸",
+        "Scanning for marriage pressure levels... 💍",
+        "Cross-checking house & car ownership... 🏡"
+    ];
+
     // DOM Elements
     const landingHero = document.getElementById('landingHero');
     const inputScreen = document.getElementById('inputScreen');
+    const loadingScreen = document.getElementById('loadingScreen');
     const resultScreen = document.getElementById('resultScreen');
 
     const btnBack = document.getElementById('btnBack');
     const btnCalculate = document.getElementById('btnCalculate');
-    const btnResultBack = document.getElementById('btnResultBack');
-    const btnRecalculate = document.getElementById('btnRecalculate');
+    const btnCalculateAgain = document.getElementById('btnCalculateAgain');
     const interrogationText = document.getElementById('interrogationText');
+    const loadingMsg = document.getElementById('loadingMsg');
 
-    // Result DOM Elements
-    const resTotalAmount = document.getElementById('resTotalAmount');
-    const resScoreText = document.getElementById('resScoreText');
-    const resScoreFill = document.getElementById('resScoreFill');
-    const resSeverity = document.getElementById('resSeverity');
-    const resCategoryList = document.getElementById('resCategoryList');
+    // Receipt DOM Elements
+    const receiptDate = document.getElementById('receiptDate');
+    const receiptViolationsList = document.getElementById('receiptViolationsList');
+    const receiptScoreVal = document.getElementById('receiptScoreVal');
+    const receiptSeverityTag = document.getElementById('receiptSeverityTag');
+    const receiptTotalAmount = document.getElementById('receiptTotalAmount');
+    const receiptRoastText = document.getElementById('receiptRoastText');
 
     let toastTimeout = null;
-    let currentScreen = 'landing'; // 'landing' | 'input' | 'result'
+    let loadingInterval = null;
+    let currentScreen = 'landing'; // 'landing' | 'input' | 'loading' | 'result'
 
     // Multi-screen view transition helper
     function navigateToScreen(targetScreenId) {
         const screens = [
             { id: 'landing', element: landingHero },
             { id: 'input', element: inputScreen },
+            { id: 'loading', element: loadingScreen },
             { id: 'result', element: resultScreen }
         ];
 
@@ -81,23 +107,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Back / Recalculate Buttons from Result to Input
-    if (btnResultBack) {
-        btnResultBack.addEventListener('click', (e) => {
-            e.stopPropagation();
-            navigateToScreen('input');
-        });
-    }
-
-    if (btnRecalculate) {
-        btnRecalculate.addEventListener('click', (e) => {
+    // CALCULATE AGAIN Button Handler
+    if (btnCalculateAgain) {
+        btnCalculateAgain.addEventListener('click', (e) => {
             e.stopPropagation();
             createRipple(e.clientX, e.clientY);
             navigateToScreen('input');
         });
     }
 
-    // Calculate Button Handler
+    // Calculate Button Handler (with Loading Screen Transition)
     if (btnCalculate) {
         btnCalculate.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -112,64 +131,107 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Populate Result Screen Data
-            populateResultCard(result);
-
-            // Transition to Result Screen
-            navigateToScreen('result');
+            // Start Loading Sequence
+            startLoadingSequence(result);
         });
     }
 
-    // Populate Result Card DOM
-    function populateResultCard(result) {
-        if (resTotalAmount) {
-            resTotalAmount.textContent = result.totalAmount.toLocaleString('en-IN');
+    function startLoadingSequence(result) {
+        navigateToScreen('loading');
+
+        let quoteIndex = 0;
+        if (loadingMsg) {
+            loadingMsg.textContent = LOADING_QUOTES[0];
         }
 
-        if (resScoreText) {
-            resScoreText.textContent = `${result.pressureScore}/100`;
-        }
+        if (loadingInterval) clearInterval(loadingInterval);
 
-        if (resScoreFill) {
-            resScoreFill.style.width = `${Math.max(5, result.pressureScore)}%`;
-        }
-
-        if (resSeverity) {
-            resSeverity.textContent = result.severity;
-        }
-
-        if (resCategoryList) {
-            resCategoryList.innerHTML = '';
-
-            // Always show Base Compensation first
-            const baseLi = document.createElement('li');
-            baseLi.className = 'category-item base-item';
-            baseLi.innerHTML = `
-                <span class="cat-name">Base Trauma Compensation</span>
-                <span class="cat-amount">+₹${result.baseAmount}</span>
-            `;
-            resCategoryList.appendChild(baseLi);
-
-            // Show detected categories
-            if (result.detectedCategories.length > 0) {
-                result.detectedCategories.forEach(cat => {
-                    const li = document.createElement('li');
-                    li.className = 'category-item';
-                    li.innerHTML = `
-                        <span class="cat-name">${escapeHtml(cat.name)}</span>
-                        <span class="cat-amount">+₹${cat.amount}</span>
-                    `;
-                    resCategoryList.appendChild(li);
-                });
-            } else {
-                const noMatchLi = document.createElement('li');
-                noMatchLi.className = 'category-item base-item';
-                noMatchLi.innerHTML = `
-                    <span class="cat-name">No major toxic keywords detected</span>
-                    <span class="cat-amount">+₹0</span>
-                `;
-                resCategoryList.appendChild(noMatchLi);
+        loadingInterval = setInterval(() => {
+            quoteIndex = (quoteIndex + 1) % LOADING_QUOTES.length;
+            if (loadingMsg) {
+                loadingMsg.textContent = LOADING_QUOTES[quoteIndex];
             }
+        }, 450);
+
+        // After 1.8 seconds delay, transition to Receipt
+        setTimeout(() => {
+            if (loadingInterval) clearInterval(loadingInterval);
+            populateReceipt(result);
+            navigateToScreen('result');
+        }, 1800);
+    }
+
+    // Format Date for Receipt
+    function formatReceiptDate() {
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, '0');
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const month = monthNames[now.getMonth()];
+        const year = now.getFullYear();
+
+        let hours = now.getHours();
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+
+        return `${day} ${month} ${year} • ${hours}:${minutes} ${ampm}`;
+    }
+
+    // Populate Digital Receipt DOM
+    function populateReceipt(result) {
+        // Date stamp
+        if (receiptDate) {
+            receiptDate.textContent = formatReceiptDate();
+        }
+
+        // Violations list
+        if (receiptViolationsList) {
+            receiptViolationsList.innerHTML = '';
+
+            // Base Trauma Compensation
+            const baseRow = document.createElement('div');
+            baseRow.className = 'receipt-item-row';
+            baseRow.innerHTML = `
+                <span class="receipt-item-name">Base Trauma Compensation</span>
+                <span class="receipt-item-dots"></span>
+                <span class="receipt-item-amount">₹${result.baseAmount}</span>
+            `;
+            receiptViolationsList.appendChild(baseRow);
+
+            // Detected Violation Categories
+            if (result.detectedCategories && result.detectedCategories.length > 0) {
+                result.detectedCategories.forEach(cat => {
+                    const row = document.createElement('div');
+                    row.className = 'receipt-item-row';
+                    row.innerHTML = `
+                        <span class="receipt-item-name">${escapeHtml(cat.name)}</span>
+                        <span class="receipt-item-dots"></span>
+                        <span class="receipt-item-amount">₹${cat.amount}</span>
+                    `;
+                    receiptViolationsList.appendChild(row);
+                });
+            }
+        }
+
+        // Score & Severity
+        if (receiptScoreVal) {
+            receiptScoreVal.textContent = `${result.pressureScore} / 100`;
+        }
+
+        if (receiptSeverityTag) {
+            receiptSeverityTag.textContent = result.severity;
+        }
+
+        // Total Amount
+        if (receiptTotalAmount) {
+            receiptTotalAmount.textContent = `₹${result.totalAmount.toLocaleString('en-IN')}`;
+        }
+
+        // Funny Roast Line
+        if (receiptRoastText) {
+            const randomRoast = ROAST_LINES[Math.floor(Math.random() * ROAST_LINES.length)];
+            receiptRoastText.textContent = `"${randomRoast}"`;
         }
     }
 
