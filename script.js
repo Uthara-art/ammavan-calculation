@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Specific Rotating Funny Loading Quotes
     const LOADING_QUOTES = [
+        "Printing your emotional damage... 🧾😂",
         "Detecting Ammavan interference...",
         "Calculating emotional damage...",
         "Comparing you with Dubai cousins...",
@@ -62,6 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const receiptDate = document.getElementById('receiptDate');
     const receiptViolationsList = document.getElementById('receiptViolationsList');
     const receiptScoreVal = document.getElementById('receiptScoreVal');
+    const receiptMeterLabel = document.getElementById('receiptMeterLabel');
+    const receiptMeterFill = document.getElementById('receiptMeterFill');
     const receiptSeverityTag = document.getElementById('receiptSeverityTag');
     const receiptTotalAmount = document.getElementById('receiptTotalAmount');
     const receiptAiAnalysisList = document.getElementById('receiptAiAnalysisList');
@@ -72,6 +75,120 @@ document.addEventListener('DOMContentLoaded', () => {
     let loadingInterval = null;
     let currentScreen = 'landing'; // 'landing' | 'input' | 'loading' | 'result'
     let lastCalculatedResult = null;
+
+    // Meter Label Mapping Helper
+    function getMeterLabel(score) {
+        if (score <= 20) return "Peaceful Family Visit 😌";
+        if (score <= 40) return "Ammavan Warming Up 👀";
+        if (score <= 60) return "Pressure Building 😰";
+        if (score <= 80) return "Escape Recommended 🚨";
+        return "RUN. MAXIMUM DAMAGE 💀";
+    }
+
+    // =================================================== */
+    // WEB AUDIO API PAPER-BILL PRINTER & TEAR SYNTHESIZER */
+    // =================================================== */
+    function playReceiptPrinterSound() {
+        try {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtx) return;
+            const ctx = new AudioCtx();
+
+            // Resume audio context if suspended
+            if (ctx.state === 'suspended') {
+                ctx.resume();
+            }
+
+            const now = ctx.currentTime;
+
+            // Master Gain (Subtle & clear volume)
+            const masterGain = ctx.createGain();
+            masterGain.gain.setValueAtTime(0.25, now);
+            masterGain.connect(ctx.destination);
+
+            // Phase 1: Mechanical Typing / Motor Pulses (0.0s - 0.8s)
+            const pulseCount = 10;
+            for (let i = 0; i < pulseCount; i++) {
+                const time = now + (i * 0.075);
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = i % 2 === 0 ? 'square' : 'triangle';
+                osc.frequency.setValueAtTime(160 + (i % 3) * 50, time);
+
+                gain.gain.setValueAtTime(0.18, time);
+                gain.gain.exponentialRampToValueAtTime(0.001, time + 0.045);
+
+                osc.connect(gain);
+                gain.connect(masterGain);
+
+                osc.start(time);
+                osc.stop(time + 0.045);
+            }
+
+            // Phase 2: Paper-Printing Motor Feed Clicks (0.8s - 1.5s)
+            const noiseBufferSize = Math.floor(ctx.sampleRate * 0.7);
+            const noiseBuffer = ctx.createBuffer(1, noiseBufferSize, ctx.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+            for (let i = 0; i < noiseBufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+
+            const motorFilter = ctx.createBiquadFilter();
+            motorFilter.type = 'bandpass';
+            motorFilter.frequency.setValueAtTime(1100, now + 0.8);
+            motorFilter.Q.setValueAtTime(3.5, now + 0.8);
+
+            const motorGain = ctx.createGain();
+            motorGain.gain.setValueAtTime(0, now + 0.8);
+
+            const feedCount = 14;
+            for (let i = 0; i < feedCount; i++) {
+                const time = now + 0.8 + (i * 0.048);
+                motorGain.gain.setValueAtTime(0.22, time);
+                motorGain.gain.exponentialRampToValueAtTime(0.005, time + 0.03);
+            }
+
+            const noiseNode = ctx.createBufferSource();
+            noiseNode.buffer = noiseBuffer;
+            noiseNode.connect(motorFilter);
+            motorFilter.connect(motorGain);
+            motorGain.connect(masterGain);
+
+            noiseNode.start(now + 0.8);
+            noiseNode.stop(now + 1.5);
+
+            // Phase 3: Paper Tear / Rip Crackle Sound at End (1.5s - 1.95s)
+            const ripBufferSize = Math.floor(ctx.sampleRate * 0.45);
+            const ripBuffer = ctx.createBuffer(1, ripBufferSize, ctx.sampleRate);
+            const ripOutput = ripBuffer.getChannelData(0);
+            for (let i = 0; i < ripBufferSize; i++) {
+                const crackle = Math.random() > 0.25 ? (Math.random() * 2 - 1) : 0;
+                ripOutput[i] = crackle;
+            }
+
+            const ripFilter = ctx.createBiquadFilter();
+            ripFilter.type = 'highpass';
+            ripFilter.frequency.setValueAtTime(1800, now + 1.5);
+            ripFilter.frequency.exponentialRampToValueAtTime(700, now + 1.95);
+
+            const ripGain = ctx.createGain();
+            ripGain.gain.setValueAtTime(0.3, now + 1.5);
+            ripGain.gain.exponentialRampToValueAtTime(0.001, now + 1.95);
+
+            const ripSource = ctx.createBufferSource();
+            ripSource.buffer = ripBuffer;
+            ripSource.connect(ripFilter);
+            ripFilter.connect(ripGain);
+            ripGain.connect(masterGain);
+
+            ripSource.start(now + 1.5);
+            ripSource.stop(now + 1.95);
+
+        } catch (e) {
+            console.warn("Web Audio API unavailable:", e);
+        }
+    }
 
     // Multi-screen view transition helper (Clean display flow)
     function navigateToScreen(targetScreenId) {
@@ -130,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Calculate Button Handler (with Loading Screen Transition)
+    // Calculate Button Handler (with Sound & Loading Screen Transition)
     if (btnCalculate) {
         btnCalculate.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -153,13 +270,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function startLoadingSequence(result) {
         navigateToScreen('loading');
 
+        // Play Web Audio API receipt printer & tear sound
+        playReceiptPrinterSound();
+
         let quoteIndex = 0;
         if (loadingMsg) {
-            loadingMsg.textContent = LOADING_QUOTES[0];
+            loadingMsg.textContent = "Printing your emotional damage... 🧾😂";
         }
 
         if (loadingInterval) clearInterval(loadingInterval);
 
+        // Cycle through loading messages every 350ms
         loadingInterval = setInterval(() => {
             quoteIndex = (quoteIndex + 1) % LOADING_QUOTES.length;
             if (loadingMsg) {
@@ -167,6 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 350);
 
+        // After 1.8 seconds delay, reveal the receipt card
         setTimeout(() => {
             if (loadingInterval) clearInterval(loadingInterval);
             populateReceipt(result);
@@ -226,6 +348,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (receiptScoreVal) {
             receiptScoreVal.textContent = `${result.pressureScore} / 100`;
+        }
+
+        if (receiptMeterLabel) {
+            receiptMeterLabel.textContent = getMeterLabel(result.pressureScore);
+        }
+
+        if (receiptMeterFill) {
+            receiptMeterFill.style.width = '0%';
+            setTimeout(() => {
+                receiptMeterFill.style.width = `${Math.max(5, result.pressureScore)}%`;
+            }, 100);
         }
 
         if (receiptSeverityTag) {
