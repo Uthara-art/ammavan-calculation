@@ -16,15 +16,32 @@ document.addEventListener('DOMContentLoaded', () => {
         "Unsolicited life advice processed and billed."
     ];
 
-    // Funny Loading Quotes Array
+    // Specific Rotating Funny Loading Quotes
     const LOADING_QUOTES = [
-        "Consulting Gulf Ammavans... ✈️",
-        "Evaluating cousin's Dubai salary... 💰",
-        "Checking PSC exam cutoffs... 📚",
-        "Analyzing unsolicited life advice... 🗣️",
-        "Converting emotional damage into Rupees... 💸",
-        "Scanning for marriage pressure levels... 💍",
-        "Cross-checking house & car ownership... 🏡"
+        "Detecting Ammavan interference...",
+        "Calculating emotional damage...",
+        "Comparing you with Dubai cousins...",
+        "Estimating unsolicited advice...",
+        "Counting your suffering..."
+    ];
+
+    // AI Family Analysis Category Messages Map
+    const AI_ANALYSIS_MESSAGES = {
+        salary: "ശമ്പളം ചോദ്യം ചെയ്യൽ detected. Your salary has officially become public property. 💸",
+        nri_cousin: "Dubai cousin comparison detected. ദുബായിലെ ചേട്ടൻ/ചേച്ചി വീണ്ടും ജയിച്ചു. 😂",
+        marriage: "കല്യാണം pressure detected. Apparently your marital status is a family emergency. 💍",
+        career: "ജോലി അന്വേഷണമെത്തി. Your career has been reviewed by people who don't work there. 😭",
+        comparison: "താരതമ്യം തുടങ്ങി. ആരുടെയോ മകൻ വീണ്ടും നിങ്ങളെക്കാൾ മുന്നിലാണ്. 😂",
+        advice: "ഉപദേശം detected. You received advice you never asked for. 🙏"
+    };
+
+    // Bilingual Final Verdict Quotes Array
+    const AI_VERDICTS = [
+        "വിധി: Ammavan owes you emotional compensation. 😂",
+        "വിധി: നിങ്ങൾ രക്ഷപ്പെട്ടു. കഷ്ടിച്ച്. 😭",
+        "Verdict: കൈനീട്ടം വാങ്ങാതെ ഇനി വീട്ടിൽ പോകരുത്. 💸",
+        "വിധി: ഈ കുടുംബയോഗത്തിന് compensation ആവശ്യമാണ്. 😂",
+        "Verdict: Emotional damage confirmed. 😌"
     ];
 
     // DOM Elements
@@ -35,6 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const btnBack = document.getElementById('btnBack');
     const btnCalculate = document.getElementById('btnCalculate');
+    const btnDownloadBill = document.getElementById('btnDownloadBill');
+    const btnShareBill = document.getElementById('btnShareBill');
     const btnCalculateAgain = document.getElementById('btnCalculateAgain');
     const interrogationText = document.getElementById('interrogationText');
     const loadingMsg = document.getElementById('loadingMsg');
@@ -45,13 +64,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const receiptScoreVal = document.getElementById('receiptScoreVal');
     const receiptSeverityTag = document.getElementById('receiptSeverityTag');
     const receiptTotalAmount = document.getElementById('receiptTotalAmount');
+    const receiptAiAnalysisList = document.getElementById('receiptAiAnalysisList');
+    const receiptAiVerdict = document.getElementById('receiptAiVerdict');
     const receiptRoastText = document.getElementById('receiptRoastText');
 
     let toastTimeout = null;
     let loadingInterval = null;
     let currentScreen = 'landing'; // 'landing' | 'input' | 'loading' | 'result'
+    let lastCalculatedResult = null;
 
-    // Multi-screen view transition helper
+    // Multi-screen view transition helper (Clean display flow)
     function navigateToScreen(targetScreenId) {
         const screens = [
             { id: 'landing', element: landingHero },
@@ -61,34 +83,26 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
 
         const target = screens.find(s => s.id === targetScreenId);
-        if (!target || target.id === currentScreen) return;
+        if (!target) return;
 
         screens.forEach(s => {
-            if (s.id === currentScreen && s.element) {
+            if (s.element) {
                 s.element.classList.remove('active-screen');
-                s.element.classList.add('exit-screen');
                 s.element.setAttribute('aria-hidden', 'true');
             }
         });
 
-        setTimeout(() => {
-            screens.forEach(s => {
-                if (s.element) {
-                    s.element.classList.remove('exit-screen');
-                }
-            });
+        if (target.element) {
+            target.element.classList.add('active-screen');
+            target.element.setAttribute('aria-hidden', 'false');
+        }
 
-            if (target.element) {
-                target.element.classList.add('active-screen');
-                target.element.setAttribute('aria-hidden', 'false');
-            }
+        currentScreen = targetScreenId;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            currentScreen = targetScreenId;
-
-            if (targetScreenId === 'input' && interrogationText) {
-                interrogationText.focus();
-            }
-        }, 180);
+        if (targetScreenId === 'input' && interrogationText) {
+            interrogationText.focus();
+        }
     }
 
     // Landing Screen Tap / Click Event
@@ -131,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Start Loading Sequence
+            lastCalculatedResult = result;
             startLoadingSequence(result);
         });
     }
@@ -151,9 +165,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (loadingMsg) {
                 loadingMsg.textContent = LOADING_QUOTES[quoteIndex];
             }
-        }, 450);
+        }, 350);
 
-        // After 1.8 seconds delay, transition to Receipt
         setTimeout(() => {
             if (loadingInterval) clearInterval(loadingInterval);
             populateReceipt(result);
@@ -180,7 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Populate Digital Receipt DOM
     function populateReceipt(result) {
-        // Date stamp
         if (receiptDate) {
             receiptDate.textContent = formatReceiptDate();
         }
@@ -189,7 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (receiptViolationsList) {
             receiptViolationsList.innerHTML = '';
 
-            // Base Trauma Compensation
             const baseRow = document.createElement('div');
             baseRow.className = 'receipt-item-row';
             baseRow.innerHTML = `
@@ -199,7 +210,6 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             receiptViolationsList.appendChild(baseRow);
 
-            // Detected Violation Categories
             if (result.detectedCategories && result.detectedCategories.length > 0) {
                 result.detectedCategories.forEach(cat => {
                     const row = document.createElement('div');
@@ -214,7 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Score & Severity
         if (receiptScoreVal) {
             receiptScoreVal.textContent = `${result.pressureScore} / 100`;
         }
@@ -223,15 +232,157 @@ document.addEventListener('DOMContentLoaded', () => {
             receiptSeverityTag.textContent = result.severity;
         }
 
-        // Total Amount
         if (receiptTotalAmount) {
             receiptTotalAmount.textContent = `₹${result.totalAmount.toLocaleString('en-IN')}`;
         }
 
-        // Funny Roast Line
+        // Populate AI Family Analysis Section
+        if (receiptAiAnalysisList) {
+            receiptAiAnalysisList.innerHTML = '';
+
+            if (result.detectedCategories && result.detectedCategories.length > 0) {
+                result.detectedCategories.forEach(cat => {
+                    const msg = AI_ANALYSIS_MESSAGES[cat.id];
+                    if (msg) {
+                        const div = document.createElement('div');
+                        div.className = 'ai-analysis-item';
+                        div.textContent = msg;
+                        receiptAiAnalysisList.appendChild(div);
+                    }
+                });
+            } else {
+                const defaultDiv = document.createElement('div');
+                defaultDiv.className = 'ai-analysis-item';
+                defaultDiv.textContent = "ശാന്തമായ സംഭാഷണം detected. Minimal relative interference found. 😌";
+                receiptAiAnalysisList.appendChild(defaultDiv);
+            }
+        }
+
+        // Populate Random AI Verdict
+        if (receiptAiVerdict) {
+            const randomVerdict = AI_VERDICTS[Math.floor(Math.random() * AI_VERDICTS.length)];
+            receiptAiVerdict.textContent = randomVerdict;
+        }
+
+        // Populate Random Roast
         if (receiptRoastText) {
             const randomRoast = ROAST_LINES[Math.floor(Math.random() * ROAST_LINES.length)];
             receiptRoastText.textContent = `"${randomRoast}"`;
+        }
+    }
+
+    // Download Bill Handler
+    if (btnDownloadBill) {
+        btnDownloadBill.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            createRipple(e.clientX, e.clientY);
+            showToast("Printing your emotional damage bill... 🧾✨");
+
+            const receiptElement = document.getElementById('ammavanReceipt');
+            if (!receiptElement || typeof html2canvas === 'undefined') {
+                showToast("Unable to generate receipt image. Please try again.");
+                return;
+            }
+
+            try {
+                const canvas = await html2canvas(receiptElement, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#faf8f5',
+                    logging: false
+                });
+
+                const dataUrl = canvas.toDataURL('image/png');
+                const downloadLink = document.createElement('a');
+                downloadLink.href = dataUrl;
+                downloadLink.download = 'ammavan-calculation-bill.png';
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            } catch (error) {
+                console.error("Download Error:", error);
+                showToast("Download failed. Please take a screenshot!");
+            }
+        });
+    }
+
+    // Share Bill Handler
+    if (btnShareBill) {
+        btnShareBill.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            createRipple(e.clientX, e.clientY);
+            showToast("Sending your emotional damage... 📤😂");
+
+            const receiptElement = document.getElementById('ammavanReceipt');
+            const totalStr = lastCalculatedResult ? lastCalculatedResult.totalAmount.toLocaleString('en-IN') : '5,000';
+            const shareText = `My Ammavan Calculation says you owe me ₹${totalStr}. 😂`;
+
+            if (!receiptElement || typeof html2canvas === 'undefined') {
+                fallbackShareText(shareText);
+                return;
+            }
+
+            try {
+                const canvas = await html2canvas(receiptElement, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#faf8f5',
+                    logging: false
+                });
+
+                canvas.toBlob(async (blob) => {
+                    if (!blob) {
+                        fallbackShareText(shareText);
+                        return;
+                    }
+
+                    const file = new File([blob], 'ammavan-calculation-bill.png', { type: 'image/png' });
+                    const shareData = {
+                        title: 'Ammavan Calculation Bill',
+                        text: shareText,
+                        files: [file]
+                    };
+
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        try {
+                            await navigator.share(shareData);
+                        } catch (err) {
+                            if (err.name !== 'AbortError') {
+                                fallbackShareText(shareText);
+                            }
+                        }
+                    } else if (navigator.share) {
+                        try {
+                            await navigator.share({
+                                title: 'Ammavan Calculation Bill',
+                                text: shareText
+                            });
+                        } catch (err) {
+                            if (err.name !== 'AbortError') {
+                                fallbackShareText(shareText);
+                            }
+                        }
+                    } else {
+                        fallbackShareText(shareText);
+                    }
+                }, 'image/png');
+            } catch (error) {
+                console.error("Share Image Generation Error:", error);
+                fallbackShareText(shareText);
+            }
+        });
+    }
+
+    // Fallback share text / clipboard copy
+    function fallbackShareText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("Bill text copied to clipboard! Share it in your family WhatsApp group! 📋✨");
+            }).catch(() => {
+                showToast(text);
+            });
+        } else {
+            showToast(text);
         }
     }
 
@@ -282,7 +433,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         toastTimeout = setTimeout(() => {
             toast.classList.remove('show');
-        }, 2500);
+        }, 2800);
     }
 
     // Parallax motion effect for floating badges on desktop

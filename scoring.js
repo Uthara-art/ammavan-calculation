@@ -1,61 +1,61 @@
 /**
  * scoring.js - Ammavan Pressure Detection & Scoring Engine
- * Independent scoring module for analyzing relative interactions.
+ * Independent, explainable scoring module with word-boundary matching and Manglish/Malayalam support.
  */
 
 const AMMAVAN_CATEGORIES = [
     {
         id: 'salary',
-        name: 'SALARY INTERROGATION',
+        name: 'Salary Interrogation',
         amount: 500,
         keywords: [
-            'salary', 'income', 'package', 'ctc', 'earn', 'monthly salary',
-            'ശമ്പളം', 'salary ethra', 'salary ethraya', 'മാസം എത്ര'
+            'salary', 'income', 'package', 'ctc', 'earn', 'earning', 'earnings', 'monthly salary', 'paycheck',
+            'ശമ്പളം', 'salary ethra', 'salary ethraya', 'മാസം എത്ര', 'എത്ര കിട്ടും', 'എത്രയാ ശമ്പളം', 'sambalam'
         ]
     },
     {
         id: 'nri_cousin',
-        name: 'NRI / COUSIN COMPARISON',
+        name: 'NRI / Cousin Comparison',
         amount: 1000,
         keywords: [
-            'dubai', 'uae', 'nri', 'abroad', 'gulf', 'cousin',
-            'ദുബായ്', 'ഗൾഫ്', 'വിദേശം'
+            'dubai', 'uae', 'nri', 'abroad', 'gulf', 'cousin', 'cousins',
+            'ദുബായ്', 'ഗൾഫ്', 'വിദേശം', 'ഗൾഫിൽ', 'dubaiyil', 'gulfil'
         ]
     },
     {
         id: 'marriage',
-        name: 'MARRIAGE PRESSURE',
+        name: 'Marriage Pressure',
         amount: 1500,
         keywords: [
-            'marriage', 'married', 'wedding', 'settle down',
-            'കല്യാണം', 'കല്യാണം ആയില്ലേ', 'എപ്പോഴാ കല്യാണം'
+            'marriage', 'married', 'wedding', 'settle down', 'getting married', 'proposal',
+            'കല്യാണം', 'കല്യാണം ആയില്ലേ', 'എപ്പോഴാ കല്യാണം', 'കല്യാണം എന്ന്', 'kalyanam', 'kalyanamayi'
         ]
     },
     {
         id: 'career',
-        name: 'JOB / CAREER QUESTIONS',
+        name: 'Job / Career Pressure',
         amount: 750,
         keywords: [
-            'job', 'career', 'promotion', 'company', 'government job',
-            'ജോലി', 'ഗവണ്മെന്റ് ജോലി', 'psc'
+            'job', 'career', 'promotion', 'company', 'government job', 'psc', 'ias', 'upsc',
+            'ജോലി', 'ഗവണ്മെന്റ് ജോലി', 'ജോലി എവിടെ', 'joli', 'joly'
         ]
     },
     {
         id: 'comparison',
-        name: 'COMPARISON / JUDGEMENT',
+        name: 'Comparison / Judgement',
         amount: 750,
         keywords: [
             'compare', 'compared', 'when i was your age', 'look at him', 'look at her', 'your cousin',
-            'നോക്ക് അവനെ', 'അവളെ കണ്ടോ'
+            'നോക്ക് അവനെ', 'അവളെ കണ്ടോ', 'കണ്ടോ അവനെ', 'nooku'
         ]
     },
     {
         id: 'advice',
-        name: 'UNSOLICITED LIFE ADVICE',
+        name: 'Unsolicited Advice',
         amount: 500,
         keywords: [
-            'you should', 'you need to', 'advice', 'buy a house', 'buy a car', 'save money',
-            'ഞങ്ങളുടെ കാലത്ത്', 'വീട്', 'കാർ'
+            'you should', 'you need to', 'advice', 'buy a house', 'buy a car', 'save money', 'invest',
+            'ഞങ്ങളുടെ കാലത്ത്', 'വീട്', 'കാർ', 'വീട് പണി', 'veedu', 'car'
         ]
     }
 ];
@@ -73,9 +73,33 @@ const SCORE_MAP = {
 };
 
 /**
- * Get Severity Level Title based on score (0 - 100)
+ * Robust Keyword Matcher
+ * Uses word boundaries \b for ASCII words to prevent partial matching false positives
+ * Uses substring search for Malayalam / non-ASCII unicode strings
  */
-function getSeverityLevel(score) {
+function isKeywordInText(lowerInput, keyword) {
+    const kw = keyword.toLowerCase().trim();
+    if (!kw) return false;
+
+    // Check if keyword consists strictly of ASCII letters/numbers/spaces
+    const isPureAscii = /^[\x00-\x7F]+$/.test(kw);
+
+    if (isPureAscii) {
+        // Escape special regex characters in keyword
+        const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        // Word boundary match
+        const regex = new RegExp(`(?:^|\\s|[^a-zA-Z0-9])${escaped}(?:$|\\s|[^a-zA-Z0-9])`, 'i');
+        return regex.test(lowerInput);
+    } else {
+        // Non-ASCII / Malayalam substring match
+        return lowerInput.includes(kw);
+    }
+}
+
+/**
+ * Get Severity Title based on pressure score (0 - 100)
+ */
+function getSeverityTitle(score) {
     if (score <= 20) return "Suspiciously Peaceful 😌";
     if (score <= 40) return "Minor Ammavan Activity";
     if (score <= 60) return "Moderate Family Interrogation";
@@ -84,11 +108,12 @@ function getSeverityLevel(score) {
 }
 
 /**
- * Calculates total kaineettam, pressure score, and detected categories
+ * Primary Ammavan Pressure Calculation Function
  * @param {string} text - User input string describing the interaction
- * @returns {object} Calculated result object or error state
+ * @returns {object} Calculated result object containing totalAmount, pressureScore, severity, detectedCategories, baseAmount
  */
 function calculateAmmavanPressure(text) {
+    // Empty input validation rule
     if (!text || typeof text !== 'string' || text.trim().length === 0) {
         return {
             error: true,
@@ -102,7 +127,7 @@ function calculateAmmavanPressure(text) {
 
     AMMAVAN_CATEGORIES.forEach(cat => {
         // Check if any keyword in this category matches the input text
-        const hasMatch = cat.keywords.some(kw => lowerInput.includes(kw.toLowerCase()));
+        const hasMatch = cat.keywords.some(kw => isKeywordInText(lowerInput, kw));
         if (hasMatch) {
             detectedCategories.push({
                 id: cat.id,
@@ -116,7 +141,7 @@ function calculateAmmavanPressure(text) {
     const matchCount = detectedCategories.length;
     const pressureScore = SCORE_MAP[matchCount] !== undefined ? SCORE_MAP[matchCount] : 100;
     const totalAmount = BASE_KAINEETTAM + detectedAmountSum;
-    const severity = getSeverityLevel(pressureScore);
+    const severity = getSeverityTitle(pressureScore);
 
     return {
         error: false,

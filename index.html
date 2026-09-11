@@ -15,6 +15,9 @@
         href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@400;500;600;700;800;900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
         rel="stylesheet">
 
+    <!-- html2canvas Library CDN for Receipt Image Rendering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
@@ -116,12 +119,12 @@
                     <div class="radar-avatar">👴🏾</div>
                 </div>
                 
-                <h2 class="loading-title">Analyzing Ammavan Pressure...</h2>
+                <h2 class="loading-title">Analyzing Family Damage... 🧠</h2>
                 <p class="loading-subtitle">അമ്മാവൻ ചോദ്യങ്ങൾ പരിശോധിക്കുന്നു...</p>
 
                 <!-- Cycling Funny Quote Message -->
                 <div class="loading-msg-box">
-                    <p class="loading-msg-text" id="loadingMsg">Consulting Gulf Ammavans... ✈️</p>
+                    <p class="loading-msg-text" id="loadingMsg">Detecting Ammavan interference...</p>
                 </div>
 
                 <!-- Progress Bar -->
@@ -179,6 +182,19 @@
 
                     <div class="receipt-divider"></div>
 
+                    <!-- AI Family Analysis Section -->
+                    <div class="receipt-section ai-analysis-section">
+                        <div class="receipt-section-title">AI FAMILY ANALYSIS 🤖</div>
+                        <div class="ai-analysis-list" id="receiptAiAnalysisList">
+                            <!-- Populated dynamically by JS -->
+                        </div>
+                        <div class="ai-verdict-box" id="receiptAiVerdict">
+                            <!-- Dynamic Verdict -->
+                        </div>
+                    </div>
+
+                    <div class="receipt-divider"></div>
+
                     <!-- Funny Roast Line Box -->
                     <div class="receipt-roast-box">
                         <span class="roast-quote-mark">“</span>
@@ -202,8 +218,14 @@
                     <div class="receipt-zigzag-bottom"></div>
                 </div>
 
-                <!-- Receipt Bottom Action -->
+                <!-- Receipt Bottom Actions -->
                 <div class="receipt-actions">
+                    <button type="button" class="btn-calculate btn-download-bill" id="btnDownloadBill">
+                        <span>DOWNLOAD BILL 🧾</span>
+                    </button>
+                    <button type="button" class="btn-calculate btn-share-bill" id="btnShareBill">
+                        <span>SHARE BILL 📤</span>
+                    </button>
                     <button type="button" class="btn-calculate btn-calculate-again" id="btnCalculateAgain">
                         <span>🔄 CALCULATE AGAIN</span>
                     </button>
