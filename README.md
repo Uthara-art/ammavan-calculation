@@ -98,10 +98,6 @@ For Software:
 - **Deployment:** GitHub Pages
 - **Architecture:** Fully client-side
 
-For Hardware:
-- Main components: None (Fully software-based application)
-- Specifications: N/A
-- Tools required: N/A
 
 ---
 
