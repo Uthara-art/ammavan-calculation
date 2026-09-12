@@ -3,10 +3,11 @@
 # അമ്മാവൻ Calculation 🎯
 
 ## Basic Details
-### Team Name: Uthara Uthaman
+## Single Project
+###  Name: Uthara Uthaman
 
-### Team Members
-- Team Lead: Uthara Uthaman - CAPE College of Engineering, Alappuzha
+###  Member
+-  Lead: Uthara Uthaman - CAPE College of Engineering, Alappuzha
 
 ### Project Description
 **അമ്മാവൻ Calculation** is a completely unnecessary financial calculator that calculates how much "കൈനീട്ടം" your relatives supposedly owe you for the emotional damage caused by family interrogations.
@@ -148,7 +149,7 @@ For Software:
 
 ---
 
-## Team Contributions
+## My Contributions
 - Uthara Uthaman: UI/UX design, scoring engine logic, Web Audio synthesizer, receipt layout & image export/sharing features.
 
 ---
