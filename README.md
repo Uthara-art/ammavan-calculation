@@ -95,7 +95,7 @@ For Software:
 - **Fonts:** Poppins, Noto Sans Malayalam
 - **Browser APIs:** Web Audio API, Web Share API
 - **Tools:** Anti-Gravity, VS Code, Git, GitHub
-- **Deployment:** GitHub Pages
+- **Deployment:** Vercel
 - **Architecture:** Fully client-side
 
 
