@@ -143,8 +143,8 @@ For Software:
 [https://youtu.be/rBzWsQAMCzk]
 *Demonstrates landing page interaction, interrogation input, printing sound synthesis, and receipt generation*
 
-# Additional Demos
-[https://share.google/OcZGEDN7lWXwA8bIe]
+# Live Demo
+[https://ammavan-calculation.vercel.app/]
 
 ---
 
