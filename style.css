@@ -654,10 +654,47 @@ textarea:focus {
     margin-bottom: 4px;
 }
 
-.receipt-date-stamp {
+.receipt-date-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    margin-top: 4px;
+    font-family: var(--font-poppins);
+}
+
+.receipt-date-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
     font-size: 0.7rem;
     font-weight: 600;
     color: var(--paper-muted);
+    line-height: 1.3;
+}
+
+.date-label {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--paper-muted);
+}
+
+.date-value {
+    color: var(--paper-dark);
+}
+
+.due-value {
+    color: #d97706;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+}
+
+.receipt-late-note {
+    font-size: 0.64rem;
+    font-style: italic;
+    color: var(--paper-muted);
+    margin-top: 1px;
 }
 
 .receipt-divider {
